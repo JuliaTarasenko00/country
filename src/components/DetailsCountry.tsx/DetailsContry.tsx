@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Typography, Paper, styled } from "@mui/material";
-import { TCountryDetails } from "../../page/CountryDetails";
 import css from "./DetainsCountry.module.css";
 import { loadingImg } from "../loadingImg";
+import { TCountryDetails } from "../../helpers/type";
 
 const Item = styled(Paper)(() => ({
   textAlign: "center",

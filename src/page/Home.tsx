@@ -1,36 +1,26 @@
 import { useState, useEffect } from "react";
 import { Container } from "@mui/material";
+import { toast } from "react-toastify";
 import { getLimitCountries } from "../Api";
 import { InformationCountry } from "../components/InformationCountry/InformationCountry";
-
-export type Country = {
-  flags: {
-    png: string;
-    svg: string;
-    alt: string;
-  };
-  capital: string[];
-  languages: any;
-  currencies: any;
-  name: {
-    official: string;
-  };
-};
+import { Country } from "../helpers/type";
 
 const HomePage = () => {
   const [countries, setCountries] = useState<Country[]>([]);
+  console.log("countries: ", countries);
 
   useEffect(() => {
-    try {
-      const fetchCountries = async () => {
+    const fetchCountries = async () => {
+      try {
         const resultCountries = await getLimitCountries();
         setCountries(resultCountries);
-      };
-      fetchCountries();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        return toast.error(`Opppss something went wrong.`);
+      }
+    };
+    fetchCountries();
   }, []);
+
 
   return (
     <Container maxWidth="xl">

@@ -1,33 +1,25 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Autocomplete, TextField } from '@mui/material';
-import { getAllCountries } from '../Api';
-import { loadingImg } from './loadingImg';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, Autocomplete, TextField } from "@mui/material";
+import { toast } from "react-toastify";
+import { getAllCountries } from "../Api";
+import { loadingImg } from "./loadingImg";
+import { CountrySearch } from "../helpers/type";
 
-type Country = {
-  flags: {
-    png: string;
-    svg: string;
-  };
-  name: {
-    official: string;
-  };
-};
-
-const SearchCountry = () => {
-  const [countries, setCountries] = useState<Country[]>([]);
+export const SearchCountry = () => {
+  const [countries, setCountries] = useState<CountrySearch[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const fetchCountries = async () => {
+    const fetchCountries = async () => {
+      try {
         const resultCountries = await getAllCountries();
         setCountries(resultCountries);
-      };
-      fetchCountries();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        return toast.error(`Opppss something went wrong.`);
+      }
+    };
+    fetchCountries();
   }, []);
 
   return (
@@ -36,16 +28,16 @@ const SearchCountry = () => {
         sx={{ width: 300 }}
         options={countries}
         autoHighlight
-        onChange={(ev: any, newValue: Country | null) => {
+        onChange={(ev: any, newValue: CountrySearch | null) => {
           if (newValue) {
             navigate(newValue.name.official);
           }
         }}
-        getOptionLabel={option => option.name.official}
+        getOptionLabel={(option) => option.name.official}
         renderOption={(props, option) => (
           <Box
             component="li"
-            sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
             {...props}
           >
             <img
@@ -60,23 +52,23 @@ const SearchCountry = () => {
             {option.name.official}
           </Box>
         )}
-        renderInput={params => (
+        renderInput={(params) => (
           <TextField
             {...params}
             id="outlined-textarea"
             label="Choose a country"
             inputProps={{
               ...params.inputProps,
-              autoComplete: 'new-password',
+              autoComplete: "new-password",
             }}
             name="country"
             multiline
             className="custom-textfield"
             InputLabelProps={{
-              style: { color: 'white', border: 'white' },
+              style: { color: "white", border: "white" },
             }}
             sx={{
-              '& .MuiInputBase-input': { color: '#fff' },
+              "& .MuiInputBase-input": { color: "#fff" },
             }}
           />
         )}
@@ -84,4 +76,3 @@ const SearchCountry = () => {
     </section>
   );
 };
-export default SearchCountry;

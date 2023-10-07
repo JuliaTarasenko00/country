@@ -1,10 +1,10 @@
 import { Grid, Box, Paper, Button, styled, Typography } from "@mui/material";
-import SearchCountry from "../SearchCountry";
 import { RouterLink } from "../Link";
 import { loadingImg } from "../loadingImg";
-import { Country } from "../../page/Home";
 import { FC } from "react";
 import country from "../../img/cuontry.png";
+import { Country } from "../../helpers/type";
+import { SearchCountry } from "../SearchCountry";
 
 type TCountry = {
   countries: Country[];

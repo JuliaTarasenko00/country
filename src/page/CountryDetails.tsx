@@ -1,31 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container } from "@mui/material";
+import { toast } from "react-toastify";
 import { getNameCountries } from "../Api";
 import { DetailsCountry } from "../components/DetailsCountry.tsx/DetailsContry";
 import Loader from "../components/Loader";
-
-export type TCountryDetails = {
-  capital: string[];
-  continents: string[];
-  coatOfArms: {
-    png: string;
-    svg: string;
-  };
-  flags: {
-    png: string;
-    svg: string;
-    alt: string;
-  };
-  name: {
-    official: string;
-  };
-  timezones: string[];
-  idd: {
-    root: string;
-    suffixes: string[];
-  };
-};
+import { TCountryDetails } from "../helpers/type";
 
 const CountryDetails = () => {
   const { countryName } = useParams<string>();
@@ -33,20 +13,19 @@ const CountryDetails = () => {
   const [country, setCountry] = useState<TCountryDetails[]>([]);
 
   useEffect(() => {
-    try {
-      const fetchNameCountry = async () => {
+    const fetchNameCountry = async () => {
+      try {
         if (typeof countryName === "string") {
           setIsLoading(true);
           const resultNameCountry = await getNameCountries(countryName);
           setCountry(resultNameCountry);
         }
-      };
-      fetchNameCountry();
-      setIsLoading(false);
-    } catch (error) {
-      console.log("error: ", error);
-    } finally {
-    }
+        setIsLoading(false);
+      } catch (error) {
+        return toast.error(`Opppss something went wrong.`);
+      }
+    };
+    fetchNameCountry();
   }, [countryName]);
 
   return (
